@@ -1,2 +1,2 @@
-# llamalog
- Simple & Fancy logger for Golang
+<h1 align="center">👾 LlamaLog - Simple & Fancy 👾</h1>
+
