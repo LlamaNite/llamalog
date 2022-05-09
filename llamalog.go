@@ -2,12 +2,15 @@ package llamalog
 
 import (
 	"fmt"
+	"io"
+	"os"
 	"strings"
 	"time"
 )
 
 type Logger struct {
 	packageName string
+	writer      io.Writer
 }
 
 type LogType string
@@ -19,11 +22,15 @@ var (
 )
 
 func NewLogger(packageDir ...string) *Logger {
-	return &Logger{Blue("[" + strings.Join(packageDir, " > ") + "] >>>")}
+	return NewLoggerFromWriter(os.Stderr, packageDir...)
+}
+
+func NewLoggerFromWriter(writer io.Writer, packageDir ...string) *Logger {
+	return &Logger{packageName: Blue("[" + strings.Join(packageDir, " > ") + "] >>>"), writer: writer}
 }
 
 func (log *Logger) Log(logType LogType, format string, a ...interface{}) {
-	fmt.Println(logType, Magenta(time.Now().Format("[15:04]")), log.packageName, fmt.Sprintf(format, a...))
+	fmt.Fprintln(log.writer, logType, Magenta(time.Now().Format("[15:04]")), log.packageName, fmt.Sprintf(format, a...))
 }
 
 func (log *Logger) Error(format string, a ...interface{}) {
