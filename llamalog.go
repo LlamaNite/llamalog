@@ -19,6 +19,7 @@ var (
 	Error LogType = SeqRed + "[ERR]" + SeqReset
 	Warn  LogType = SeqYellow + "[WRN]" + SeqReset
 	Info  LogType = SeqGreen + "[INF]" + SeqReset
+	Fatal LogType = SeqMagenta + "[FATAL]" + SeqReset
 )
 
 func NewLogger(packageDir ...string) *Logger {
@@ -42,4 +43,9 @@ func (log *Logger) Warn(format string, a ...interface{}) {
 }
 func (log *Logger) Info(format string, a ...interface{}) {
 	log.Log(Info, format, a...)
+}
+
+func (log *Logger) Fatal(format string, a ...interface{}) {
+	log.Log(Fatal, format, a...)
+	os.Exit(1)
 }
